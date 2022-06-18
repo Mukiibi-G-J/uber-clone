@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "uber-clone",
-    "slug": "uber-clone",
+    "name": "uberclone",
+    "slug": "uberclone",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,17 +14,28 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.uberclone",
+      "config": {
+        "googleMapsApiKey": "AIzaSyCY6Bgarn4n6eMnYP1E4Qx0TbFmuNecGSE"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.uberclone",
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyCY6Bgarn4n6eMnYP1E4Qx0TbFmuNecGSE" }
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "FOREGROUND_SERVICE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
