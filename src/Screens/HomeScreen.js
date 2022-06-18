@@ -8,7 +8,7 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { parameters, colors } from '../Global/styles';
 import { Icon } from 'react-native-elements';
@@ -16,11 +16,43 @@ import { StatusBar } from 'expo-status-bar';
 // import { filterData } from '../Global/data';
 import { filterData } from '../Global/data';
 import { makeStyle, mapStyle } from '../Global/mapStyle';
+import * as Location from 'expo-location';
+// import { useEffect } from 'react';
 //?getting the width screen
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const HomeScreen = () => {
+  const [latlng, setLatLng] = useState({});
+  const checkPermission = async () => {
+    const hasPermission = await Location.requestForegroundPermissionsAsync();
+    if (hasPermission.status == 'granted') {
+      const permission = await askPermission();
+      return permission;
+    }
+    return true;
+  };
+  const askPermission = async () => {
+    const permission = await Location.requestForegroundPermissionsAsync();
+    return permission.status == 'granted';
+  };
+  const getLocation = async () => {
+    try {
+      const { granted } = await Location.requestForegroundPermissionsAsync();
+      if (!granted) return;
+      const {
+        coords: { latitude, longitude },
+      } = await Location.getCurrentPositionAsync();
+      setLatLng({ latitude: latitude, longitude: longitude });
+    } catch (err) {}
+  };
+  const _map = useRef(1);
+  useEffect(() => {
+    checkPermission();
+    getLocation();
+    console.log(latlng);
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -146,9 +178,12 @@ const HomeScreen = () => {
         <Text style={styles.text4}>Around you</Text>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <MapView
+            ref={_map}
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             customMapStyle={mapStyle}
+            showsUserLocation={true}
+            followsUserLocation={true}
           ></MapView>
         </View>
       </ScrollView>
