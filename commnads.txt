@@ -6,4 +6,5 @@ npm i react-native-status-bar-height
 npx react-native link react-native-vector-icons
 npm install react-native-safe-area-context
 npm i react-native-elements
+expo install expo-location
 api key AIzaSyCY6Bgarn4n6eMnYP1E4Qx0TbFmuNecGSE
