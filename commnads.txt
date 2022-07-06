@@ -7,4 +7,8 @@ npx react-native link react-native-vector-icons
 npm install react-native-safe-area-context
 npm i react-native-elements
 expo install expo-location
+https://www.latlong.net/convert-address-to-lat-long.html
 api key AIzaSyCY6Bgarn4n6eMnYP1E4Qx0TbFmuNecGSE
+npm install @react-navigation/native
+npm install @react-navigation/native-stack
+expo install react-native-gesture-handler react-native-reanimated

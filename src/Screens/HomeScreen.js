@@ -14,7 +14,7 @@ import { parameters, colors } from '../Global/styles';
 import { Icon } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
 // import { filterData } from '../Global/data';
-import { filterData } from '../Global/data';
+import { filterData, carsAround } from '../Global/data';
 import { makeStyle, mapStyle } from '../Global/mapStyle';
 import * as Location from 'expo-location';
 // import { useEffect } from 'react';
@@ -184,7 +184,22 @@ const HomeScreen = () => {
             customMapStyle={mapStyle}
             showsUserLocation={true}
             followsUserLocation={true}
-          ></MapView>
+            initialregion={{
+              ...carsAround[0],
+              latitudeDelta: 0.008,
+              longitudeDelta: 0.008,
+            }}
+          >
+            {carsAround.map((item, index) => (
+              <MapView.Marker coordinate={item} key={index.toString()}>
+                <Image
+                  source={require('../../assets/carMarker.png')}
+                  style={styles.carsAround}
+                  resizeMode="cover"
+                />
+              </MapView.Marker>
+            ))}
+          </MapView>
         </View>
       </ScrollView>
 
