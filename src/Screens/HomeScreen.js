@@ -7,26 +7,28 @@ import {
   SafeAreaView,
   Image,
   FlatList,
-} from 'react-native';
-import React, { useEffect, useState, useRef } from 'react';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import { parameters, colors } from '../Global/styles';
-import { Icon } from 'react-native-elements';
-import { StatusBar } from 'expo-status-bar';
+  TouchableOpacity,
+} from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import { parameters, colors } from "../Global/styles";
+import { Icon } from "react-native-elements";
+import { StatusBar } from "expo-status-bar";
 // import { filterData } from '../Global/data';
-import { filterData, carsAround } from '../Global/data';
-import { makeStyle, mapStyle } from '../Global/mapStyle';
-import * as Location from 'expo-location';
+import { filterData, carsAround } from "../Global/data";
+import { makeStyle, mapStyle } from "../Global/mapStyle";
+import * as Location from "expo-location";
+import { Pressable } from "react-native";
 // import { useEffect } from 'react';
 //?getting the width screen
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_WIDTH = Dimensions.get("window").width;
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [latlng, setLatLng] = useState({});
   const checkPermission = async () => {
     const hasPermission = await Location.requestForegroundPermissionsAsync();
-    if (hasPermission.status == 'granted') {
+    if (hasPermission.status == "granted") {
       const permission = await askPermission();
       return permission;
     }
@@ -34,7 +36,7 @@ const HomeScreen = () => {
   };
   const askPermission = async () => {
     const permission = await Location.requestForegroundPermissionsAsync();
-    return permission.status == 'granted';
+    return permission.status == "granted";
   };
   const getLocation = async () => {
     try {
@@ -56,6 +58,7 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        {/* <Pressable onPress={() => navigation.openDrawer()}> */}
         <View style={styles.icon1}>
           <Icon
             type="material-community"
@@ -64,6 +67,7 @@ const HomeScreen = () => {
             size={40}
           />
         </View>
+        {/* </Pressable> */}
       </View>
 
       <ScrollView>
@@ -74,14 +78,20 @@ const HomeScreen = () => {
               <Text style={styles.text2}>
                 Read a book.Take a nap. Stare out the Window
               </Text>
-              <View style={styles.button1}>
-                <Text style={styles.button1Text}> Ride with uber</Text>
-              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("RequestScreen");
+                }}
+              >
+                <View style={styles.button1}>
+                  <Text style={styles.button1Text}> Ride with uber</Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <View>
               <Image
                 style={styles.image1}
-                source={require('../../assets/uberCar.png')}
+                source={require("../../assets/uberCar.png")}
               />
             </View>
           </View>
@@ -176,7 +186,7 @@ const HomeScreen = () => {
           </View>
         </View>
         <Text style={styles.text4}>Around you</Text>
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
           <MapView
             ref={_map}
             provider={PROVIDER_GOOGLE}
@@ -193,7 +203,7 @@ const HomeScreen = () => {
             {carsAround.map((item, index) => (
               <MapView.Marker coordinate={item} key={index.toString()}>
                 <Image
-                  source={require('../../assets/carMarker.png')}
+                  source={require("../../assets/carMarker.png")}
                   style={styles.carsAround}
                   resizeMode="cover"
                 />
@@ -219,7 +229,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.blue,
     height: parameters.headerHeight,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
   },
 
   image1: {
@@ -247,7 +257,7 @@ const styles = StyleSheet.create({
   },
 
   view1: {
-    flexDirection: 'row',
+    flexDirection: "row",
     flex: 1,
     paddingTop: 30,
   },
@@ -257,8 +267,8 @@ const styles = StyleSheet.create({
     width: 150,
     backgroundColor: colors.black,
     borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 20,
   },
 
@@ -268,7 +278,7 @@ const styles = StyleSheet.create({
     marginTop: -2,
   },
   card: {
-    alignItems: 'center',
+    alignItems: "center",
     margin: SCREEN_WIDTH / 22,
   },
 
@@ -279,32 +289,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   view3: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 5,
     height: 50,
     backgroundColor: colors.grey6,
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: "center",
+    justifyContent: "space-between",
     marginHorizontal: 15,
   },
   text3: { marginLeft: 15, fontSize: 20, color: colors.black },
 
   view4: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginRight: 15,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     paddingHorizontal: 10,
     paddingVertical: 2,
     borderRadius: 20,
   },
 
   view5: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
     paddingVertical: 25,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     marginHorizontal: 15,
     borderBottomColor: colors.grey4,
     borderBottomWidth: 1,
@@ -312,17 +322,17 @@ const styles = StyleSheet.create({
   },
 
   view6: {
-    alignItems: 'center',
+    alignItems: "center",
     flex: 5,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   view7: {
     backgroundColor: colors.grey6,
     height: 40,
     width: 40,
     borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginRight: 20,
   },
 
@@ -352,9 +362,9 @@ const styles = StyleSheet.create({
     height: 16,
     borderRadius: 8,
     backgroundColor: colors.blue,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 
-  view9: { width: 4, height: 4, borderRadius: 2, backgroundColor: 'white' },
+  view9: { width: 4, height: 4, borderRadius: 2, backgroundColor: "white" },
 });
